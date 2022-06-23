@@ -11,7 +11,7 @@ layout = [
       [sg.Button('Scrape websites!', key = 'scrape', size=(37,1), button_color=('blue', 'gray'))],
 ]
 
-window = sg.Window('Booking crawler', layout, icon=r'.\booking_logo.ico')
+window = sg.Window('Booking crawler', layout)
 
 while True:
     event, values = window.read()

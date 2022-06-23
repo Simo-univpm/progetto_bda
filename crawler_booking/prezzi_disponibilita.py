@@ -1,6 +1,7 @@
 import requests # libreria per generare richieste HTTP
 from bs4 import BeautifulSoup as bs # libreria per scraping
 import pandas as pd
+from os.path import dirname, abspath
 head = head = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0'}
 
 
@@ -71,7 +72,9 @@ def write_availabilities_to_excel(dataset, checkin, checkout):
 
   df = pd.DataFrame(dataset, columns = ["tipologia_stanza", "numero_persone", "prezzo_pieno", "prezzo_scontato", "URL"])
 
-  OUTPUT_PATH = f'C:/Users/Simo/Desktop/progetto_bda/datasets/availability_dataset_{checkin}_{checkout}.xlsx'
+  OUTPUT_PATH = dirname(dirname(abspath(__file__)))
+  OUTPUT_PATH = OUTPUT_PATH + f'/datasets/availability_dataset_{checkin}_{checkout}.xlsx'
+  OUTPUT_PATH = OUTPUT_PATH.replace("\\", "/")
   df.to_excel(OUTPUT_PATH)
 
   print("dataset disponibilita' scritto su file")

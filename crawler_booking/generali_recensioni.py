@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup as bs # libreria per scraping
 import pandas as pd
 import json
 import math
+from os.path import dirname, abspath
 head = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0'}
 
 # ottiene tutti gli url dei primi 25 camping presentati nella pagina di ricerca di booking
@@ -161,18 +162,26 @@ def getReviewsData(soup, url):
 # scrive il dataset dei dati generali su excel
 def write_general_to_excel(dataset):
 
+  OUTPUT_PATH = dirname(dirname(abspath(__file__)))
+  OUTPUT_PATH = OUTPUT_PATH + f'/datasets/general_data_dataset.xlsx'
+  OUTPUT_PATH = OUTPUT_PATH.replace("\\", "/")
+
   columns = ["url", "camping_name", "camping_address", "camping_description", "camping_host_description", "camping_facilities"]
   df = pd.DataFrame(dataset, columns = columns)
-  df.to_excel('C:/Users/Simo/Desktop/progetto_bda/datasets/general_data_dataset.xlsx')
+  df.to_excel(OUTPUT_PATH)
 
   print("dati generali scritti su file")
 
 # scrive il dataset delle recensioni su excel
 def write_reviews_to_excel(dataset):
+
+  OUTPUT_PATH = dirname(dirname(abspath(__file__)))
+  OUTPUT_PATH = OUTPUT_PATH + f'/datasets/review_dataset.xlsx'
+  OUTPUT_PATH = OUTPUT_PATH.replace("\\", "/")
   
   columns = ["reviews_vote", "reviews_title", "reviews_negative", "reviews_positive", "review_staydate", "url"]
   df = pd.DataFrame(dataset, columns = columns)
-  df.to_excel('C:/Users/Simo/Desktop/progetto_bda/datasets/review_dataset.xlsx')
+  df.to_excel(OUTPUT_PATH)
 
   print("recensioni scritte su file")
 
