@@ -64,58 +64,112 @@ def editLinksReviews(url):
 
   return edited_links_reviews
 
-def main(url):
+def getReviewRating(tag):
+  # estrapola il voto dal tag span della recensione
+  app = tag['class'][1]
   
+  match app:
+    case "bubble_10":
+      return 1
+    case "bubble_20":
+      return 2
+    case "bubble_30":
+      return 3
+    case "bubble_40":
+      return 4
+    case "bubble_50":
+      return 5
+    
+    # default
+    case _:
+      return -1
+
+def getReviews(url):
+
+  # ritorna le 5 recensioni presenti nella pagina in una lista
+
+  head = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0'}
+  response = requests.get(url, headers = head)
+  soup = bs(response.text, 'lxml')
+
+
+  lista_div_recensioni = soup.find_all("div", {"class": "cWwQK MC R2 Gi z Z BB dXjiy"} and {"data-test-target": "HR_CC_CARD"})
+
+  recensioni = []
+  for div_recensioni in lista_div_recensioni:
+
+    # utente che ha lasciato la recensione
+    user = div_recensioni.find("a", {"class": "ui_header_link bPvDb"}, href = True)
+    if user is not None: recensioni.append(user.text)
+    else: recensioni.append("no user")
+
+    # voto della recensione
+    rating = div_recensioni.find("span", {"class": "ui_bubble_rating"})
+    if rating is not None: recensioni.append(getReviewRating(rating))
+    else: recensioni.append("no rating")
+
+    # titolo della recensione
+    title = div_recensioni.find("div", {"class": "fpMxB MC _S b S6 H5 _a"} and {"dir": "ltr"} and {"data-test-target": "review-title"})
+    if title is not None: recensioni.append(title.text)
+    else: recensioni.append("no title")
+
+    # corpo della recensione
+    review_text = div_recensioni.find("q", {"class": "XllAv H4 _a"})
+    if review_text is not None: recensioni.append(review_text.text)
+    else: recensioni.append("no text")
+
+    # data di soggiorno dell'utente che ha lasciato la recensione
+    stay_date = div_recensioni.find("span", {"class": "euPKI _R Me S4 H3"})
+    if stay_date is not None: recensioni.append(stay_date.text)
+    else: recensioni.append("no date")
+  
+  return recensioni
+  
+def main(url):
+
   camping_general_data_and_facilities = []
   camping_reviews_links = []
 
-  # DATI GENERALI E SERVIZI | OK
+  # SCRAPING DATI GENERALI E SERVIZI | OK
   for u in url: 
     camping_general_data_and_facilities.append(get_general_and_facilities(u)) 
     print("scraping general: " + u)
 
-  # SCRAPING RECENSIONI
+  # PRENDO TUTTI I LINK CONTENENTI RECENSIONI | OK
+  for u in url:
+    camping_reviews_links.append(editLinksReviews(u))
+    print("ottenendo i links_reviews: " + u)
+  
+  # SCRAPING RECENSIONI | TEST
+  for reviews_links in camping_reviews_links:
+    for link in reviews_links:
+      print("scraping reviews: " + link)
+      getReviews(link)
+
+def testMain(url):
+
+  # TESTING DELLE RECENSIONI:
+  # il crawler sembra funzionare ma non so se prende effettivamente i dati perché non stampo nulla.
+  # da testare con il camping url[11] che ha poche recensioni
+  # implementare poi la scrittura su excell.
+
+  camping_reviews_links = []
+
   for u in url:
     camping_reviews_links.append(editLinksReviews(u))
     print("ottenendo i links_reviews: " + u)
 
-
-  # stampa risultati
-  for elem in camping_general_data_and_facilities:
-    print(elem)
-    print()
-
-  for elem in camping_reviews_links:
-    print(elem)
-    print()
-
-
-
-main(url)
+  for reviews_links in camping_reviews_links:
+    for link in reviews_links:
+      print("scraping reviews: " + link)
+      getReviews(link)
 
 
 
 
-# TESTS ==========================================================================
 
-#get_general_and_facilities(url[0])
-#editLinksReviews(url[0])
 
-# ================================================================================
 
-#servizi_appoggio1 = []
-#servizi_appoggio2 = []
 
-#facilities1 = soup.find_all("div", {"class": "ccdzg S5 b Pf ME"})
-#facilities2 = soup.find_all("div", {"class": "bUmsU f ME H3 _c"})
-
-#for title in facilities1:
-#  servizi_appoggio1.append(title.text.strip().upper())
-
-#  for facility in facilities2:
-#    servizi_appoggio2.append(facility.text.strip())
-
-#print(servizi_appoggio1)
-#print(servizi_appoggio2)
-
-# ================================================================================
+#main(url)
+testMain(url)
