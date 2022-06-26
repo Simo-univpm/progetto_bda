@@ -72,7 +72,7 @@ def write_availabilities_to_excel(dataset, checkin, checkout):
 
 
   OUTPUT_PATH = dirname(dirname(abspath(__file__)))
-  OUTPUT_PATH = OUTPUT_PATH + f'/datasets/availability_dataset_{checkin}_{checkout}.xlsx'
+  OUTPUT_PATH = OUTPUT_PATH + f'/datasets/availability_dataset_{checkin}_{checkout}_booking.xlsx'
   OUTPUT_PATH = OUTPUT_PATH.replace("\\", "/")
   
   df = pd.DataFrame(dataset, columns = ["tipologia_stanza", "numero_persone", "prezzo_pieno", "prezzo_scontato", "URL"])

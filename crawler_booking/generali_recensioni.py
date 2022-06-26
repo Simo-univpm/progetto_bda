@@ -163,7 +163,7 @@ def getReviewsData(soup, url):
 def write_general_to_excel(dataset):
 
   OUTPUT_PATH = dirname(dirname(abspath(__file__)))
-  OUTPUT_PATH = OUTPUT_PATH + f'/datasets/general_data_dataset.xlsx'
+  OUTPUT_PATH = OUTPUT_PATH + f'/datasets/general_data_dataset_booking.xlsx'
   OUTPUT_PATH = OUTPUT_PATH.replace("\\", "/")
 
   columns = ["url", "camping_name", "camping_address", "camping_description", "camping_host_description", "camping_facilities"]
@@ -176,7 +176,7 @@ def write_general_to_excel(dataset):
 def write_reviews_to_excel(dataset):
 
   OUTPUT_PATH = dirname(dirname(abspath(__file__)))
-  OUTPUT_PATH = OUTPUT_PATH + f'/datasets/review_dataset.xlsx'
+  OUTPUT_PATH = OUTPUT_PATH + f'/datasets/review_dataset_booking.xlsx'
   OUTPUT_PATH = OUTPUT_PATH.replace("\\", "/")
   
   columns = ["reviews_vote", "reviews_title", "reviews_negative", "reviews_positive", "review_staydate", "url"]
