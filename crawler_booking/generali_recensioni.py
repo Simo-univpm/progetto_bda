@@ -7,7 +7,7 @@ from os.path import dirname, abspath
 head = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0'}
 
 # ottiene tutti gli url dei primi 25 camping presentati nella pagina di ricerca di booking
-def get_all_camping_links():
+def getAllCampingLinks():
 
   url = "https://www.booking.com/searchresults.it.html?ss=Marche%2C+Italia&is_ski_area=&checkin_year=&checkin_month=&checkout_year=&checkout_month=&group_adults=2&group_children=0&no_rooms=1&b_h4u_keep_filters=&from_sf=1&dest_id=905&dest_type=region&search_selected=true&nflt=ht_id%3D224%3Bht_id%3D214"
   head = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0'}
@@ -42,6 +42,13 @@ def editLinksReviews(unedited_links):
 
   return urls
 
+
+def getIdGeneral(url):
+  id = url.partition(".it.html")[0] # prende tutto quello prima di .it.html dall'url
+  id = id.partition("it/")[2] # prende tutto quello dopo di it/ dall'url
+
+  return id
+
 # ottiene i dati generali dagli url editati tramite editLinksGeneral
 def getGeneralData(url):
 
@@ -50,8 +57,6 @@ def getGeneralData(url):
 
   resp = requests.get(url, headers = head)
   soup = bs(resp.text, 'lxml')
-
-  camping.append(url.partition("?")[0])
 
   camping_data_raw = soup.find("script", {"type": "application/ld+json"})
   data_camping_json = json.loads(camping_data_raw.string)
@@ -67,13 +72,14 @@ def getGeneralData(url):
   if camping_host_description is not None: camping.append(camping_host_description.text.strip())
   else: camping.append("No camping host description")
 
+  camping.append(getFacilities(soup))
+  camping.append(url.partition("?")[0])
+  camping.append(getIdGeneral(url))
+
   return camping
 
 # ottine le recensioni dagli url editati tramite editLinksReviews
-def getFacilities(url):
-
-  resp = requests.get(url, headers = head)
-  soup = bs(resp.text, 'lxml')
+def getFacilities(soup):
 
   facilities_list = soup.find_all("div", {"class": "hotel-facilities-group"}) # prendo tutti i div con i servizi
 
@@ -125,6 +131,13 @@ def getReviewsUrl(url, n_reviews_page):
 
   return url_reviews
 
+def getIdReviews(url):
+  # https://www.booking.com/reviews/it/hotel/camping-tre-archi.it.html
+  id = url.partition(".it.html")[0]
+  id = id.partition("hotel/")[2]
+
+  return id
+
 # prende i dati delle recensioni e ritorna una lista contenente tutte le recensioni di una pagina (quindi di un url)
 def getReviewsData(soup, url):
 
@@ -152,43 +165,43 @@ def getReviewsData(soup, url):
     staydate_review = review.find("p", {"class": "review_staydate"})
     review_appoggio.append(staydate_review.text.strip())
 
-    url_ = (str(url).partition("?")[0])
-    review_appoggio.append(url_)
+    review_appoggio.append(str(url).partition("?")[0])
+    review_appoggio.append(getIdReviews(url))
 
     all_reviews.append(review_appoggio)
 
   return all_reviews
 
 # scrive il dataset dei dati generali su excel
-def write_general_to_excel(dataset):
+def writeGeneralToExcel(dataset):
 
   OUTPUT_PATH = dirname(dirname(abspath(__file__)))
   OUTPUT_PATH = OUTPUT_PATH + f'/datasets/general_data_dataset_booking.xlsx'
   OUTPUT_PATH = OUTPUT_PATH.replace("\\", "/")
 
-  columns = ["url", "camping_name", "camping_address", "camping_description", "camping_host_description", "camping_facilities"]
+  columns = ["camping_name", "camping_address", "camping_description", "camping_host_description", "camping_facilities", "url", "id"]
   df = pd.DataFrame(dataset, columns = columns)
   df.to_excel(OUTPUT_PATH)
 
-  print("dati generali scritti su file")
+  print("dati generali scritti su: " + OUTPUT_PATH)
 
 # scrive il dataset delle recensioni su excel
-def write_reviews_to_excel(dataset):
+def writeReviewsToExcel(dataset):
 
   OUTPUT_PATH = dirname(dirname(abspath(__file__)))
   OUTPUT_PATH = OUTPUT_PATH + f'/datasets/review_dataset_booking.xlsx'
   OUTPUT_PATH = OUTPUT_PATH.replace("\\", "/")
   
-  columns = ["reviews_vote", "reviews_title", "reviews_negative", "reviews_positive", "review_staydate", "url"]
+  columns = ["reviews_vote", "reviews_title", "reviews_negative", "reviews_positive", "review_staydate", "url", "id"]
   df = pd.DataFrame(dataset, columns = columns)
   df.to_excel(OUTPUT_PATH)
 
-  print("recensioni scritte su file")
+  print("recensioni scritte su: " + OUTPUT_PATH)
 
 
 def main():
 
-  all_links = get_all_camping_links()
+  all_links = getAllCampingLinks()
   links_with_general = editLinksGeneral(all_links) # link editati per fare scraping dei DATI dei camping
   links_with_reviews = editLinksReviews(all_links) # link editati per fare scraping delle RECENSIONI
 
@@ -197,8 +210,6 @@ def main():
   for url in links_with_general:
 
     camping = getGeneralData(url)
-    camping.append(getFacilities(url))
-
     all_campings_general_data.append(camping)
 
 
@@ -230,7 +241,7 @@ def main():
       all_camping_reviews.append(review)
 
 
-  write_general_to_excel(all_campings_general_data)
-  write_reviews_to_excel(all_camping_reviews)
+  writeGeneralToExcel(all_campings_general_data)
+  writeReviewsToExcel(all_camping_reviews)
 
-#main()
+main()

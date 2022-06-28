@@ -84,7 +84,7 @@ def getGeneralAndFacilities(url):
 
   camping_facilities = ''.join(map(str, servizi_app))
   
-  camping_general.append(camping_name); camping_general.append(camping_address); camping_general.append(camping_about); camping_general.append(camping_price); camping_general.append(camping_facilities)
+  camping_general.append(camping_name); camping_general.append(camping_address); camping_general.append(camping_about); camping_general.append(camping_price); camping_general.append(camping_facilities); camping_general.append(url)
   return camping_general
 
 def getNumReviews(url):
@@ -177,11 +177,11 @@ def writeGeneralToExcel(dataset):
   OUTPUT_PATH = OUTPUT_PATH + f'/datasets/general_data_dataset_tripadvisor.xlsx'
   OUTPUT_PATH = OUTPUT_PATH.replace("\\", "/")
   
-  columns = ["name", "address", "about", "price", "facilities"]
+  columns = ["name", "address", "about", "price", "facilities", "url"]
   df = pd.DataFrame(dataset, columns = columns)
   df.to_excel(OUTPUT_PATH)
 
-  print("generali scritte su file")
+  print("generali scritte su: " + OUTPUT_PATH)
 
 def writeReviewsToExcel(dataset):
   
@@ -193,7 +193,7 @@ def writeReviewsToExcel(dataset):
   df = pd.DataFrame(dataset, columns = columns)
   df.to_excel(OUTPUT_PATH)
 
-  print("recensioni scritte su file")
+  print("recensioni scritte su:" + OUTPUT_PATH)
 
 def main(url):
 
