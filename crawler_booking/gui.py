@@ -34,8 +34,6 @@ while True:
 # avvia il programma ====================================================
     if event == 'scrape':
         if values['prezzi_disponibilita'] == True:
-            print("checkin: " + values['checkin'])
-            print("checkout: " + values['checkout'])
             if not values['checkin'] and not values['checkout']: sg.popup_error('please insert checkin and checkout dates', no_titlebar = True, background_color = 'gray')
             else : main_disponibilita(values['checkin'], values['checkout'])
     

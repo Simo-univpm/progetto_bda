@@ -1,13 +1,10 @@
-from operator import le
-from numpy import single
-import requests # libreria per generare richieste HTTP 
-from bs4 import BeautifulSoup as bs # libreria per scraping
+import requests
+from bs4 import BeautifulSoup as bs
 import math
 import pandas as pd
 from os.path import dirname, abspath
 
-# link di ricerca contenente svariati camping in italia
-link_ricerca = "https://www.tripadvisor.com/Search?q=camping&searchSessionId=6869D301949AE640A787F7ACAF5420761656251146515ssid&geo=187794&sid=E352E633D5854E248A7DD1D6B396DCA71656251201663&blockRedirect=true&ssrc=a&rf=5"
+
 url = ["https://www.tripadvisor.it/Hotel_Review-g1924689-d948494-Reviews-Natural_Village_Resort-Porto_Potenza_Picena_Potenza_Picena_Province_of_Macerata_Marche.html",
        "https://www.tripadvisor.it/Hotel_Review-g1582949-d2346767-Reviews-La_Risacca_Camping_Village_Formule_Hotel-Porto_Sant_Elpidio_Province_of_Fermo_Marche.html", 
        "https://www.tripadvisor.it/Hotel_Review-g1741825-d1891906-Reviews-Girasole_Eco_Family_Village-Marina_Palmense_Fermo_Province_of_Fermo_Marche.html", 
@@ -21,24 +18,41 @@ url = ["https://www.tripadvisor.it/Hotel_Review-g1924689-d948494-Reviews-Natural
        "https://www.tripadvisor.it/Hotel_Review-g194742-d21379810-Reviews-Poggio_Imperiale_Marche-Civitanova_Marche_Province_of_Macerata_Marche.html", 
        "https://www.tripadvisor.it/Hotel_Review-g23906399-d12336250-Reviews-Casale_Civetta-Borgo_della_Consolazione_Trecastelli_Province_of_Ancona_Marche.html"]
 
-def getAllCampingLinks(url):
 
-  #l'url qui è: link_ricerca
-
-  head = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0'}
-  resp = requests.get(url, headers = head)
-  soup = bs(resp.text, 'lxml')
-
-
-  all_camping_href = []
-  # <div class="ui_column is-12 content-column result-card result-card-default" data-widget-type="LOCATIONS">
-  all_campings_div = soup.find_all("div", {"class": "ui_column is-12 content-column result-card result-card-default"} and {"data-widget-type": "LOCATIONS"})
-  if all_campings_div is not None:
-    # <div class="result-title"  prendi da dentro il titolo del tag il link
-    for camping in all_campings_div:
-      all_camping_href.append(camping.find("div", {"class": "result-title"}))
-      # prendi l'onclick da sto coso qui sopra ciao
-
+# altri_url sono stati presi manualmente dal link di ricerca, con bs4 non ci riesco
+url_ricerca = "https://www.tripadvisor.com/Search?q=camping&searchSessionId=6869D301949AE640A787F7ACAF5420761656251146515ssid&geo=187794&sid=E352E633D5854E248A7DD1D6B396DCA71656251201663&blockRedirect=true&ssrc=a&rf=5"
+altri_url = [
+  "https://www.tripadvisor.com/Hotel_Review-g194775-d2688714-Reviews-Don_Antonio_Camping_Village-Giulianova_Province_of_Teramo_Abruzzo.html",
+  "https://www.tripadvisor.com/Hotel_Review-g528748-d4046705-Reviews-Camping_Panorama_del_Chianti-Certaldo_Tuscany.html",
+  "https://www.tripadvisor.com/Hotel_Review-g194759-d4026529-Reviews-La_Mimosa_Camping-Fano_Province_of_Pesaro_and_Urbino_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g194878-d3365696-Reviews-Camping_Riccione-Riccione_Province_of_Rimini_Emilia_Romagna.html",
+  "https://www.tripadvisor.com/Hotel_Review-g2002511-d2318786-Reviews-Camping_Vettore-Montegallo_Province_of_Ascoli_Piceno_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g946961-d946965-Reviews-Vigna_sul_Mar_Family_Camping_Village-Lido_di_Pomposa_Comacchio_Province_of_Ferrara_Emil.html",
+  "https://www.tripadvisor.com/Hotel_Review-g796973-d2216148-Reviews-Camping_Village_Punta_Navaccia-Tuoro_sul_Trasimeno_Province_of_Perugia_Umbria.html",
+  "https://www.tripadvisor.com/Hotel_Review-g194732-d1146660-Reviews-Cesenatico_Camping_Village-Cesenatico_Province_of_Forli_Cesena_Emilia_Romagna.html",
+  "https://www.tripadvisor.com/Hotel_Review-g1566582-d3310023-Reviews-Camping_Monte_Prata-Castelsantangelo_sul_Nera_Province_of_Macerata_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g194742-d1993072-Reviews-Camping_Centro_Turistico_Belvedere-Civitanova_Marche_Province_of_Macerata_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g1182940-d2214794-Reviews-Camping_Village_Tahiti-Lido_delle_Nazioni_Comacchio_Province_of_Ferrara_Emilia_Romagn.html",
+  "https://www.tripadvisor.com/Hotel_Review-g1582949-d2346767-Reviews-La_Risacca_Camping_Village_Formule_Hotel-Porto_Sant_Elpidio_Province_of_Fermo_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g194759-d6603161-Reviews-Camping_Stella_Maris-Fano_Province_of_Pesaro_and_Urbino_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g194838-d676423-Reviews-Conero_Azzurro-Numana_Province_of_Ancona_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g187895-d239188-Reviews-Camping_Michelangelo-Florence_Tuscany.html",
+  "https://www.tripadvisor.com/Hotel_Review-g194914-d2344934-Reviews-Camping_Blu_Fantasy-Senigallia_Province_of_Ancona_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g187896-d669556-Reviews-Camping_Village_Panoramico_Fiesole-Fiesole_Tuscany.html",
+  "https://www.tripadvisor.com/Hotel_Review-g730082-d1548649-Reviews-Camping_Don_Diego-Grottammare_Province_of_Ascoli_Piceno_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g187902-d1203618-Reviews-Camping_Siena_Colleverde-Siena_Tuscany.html",
+  "https://www.tripadvisor.com/Hotel_Review-g2140648-d3519310-Reviews-Camping_Lpre-Ostra_Province_of_Ancona_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g676810-d255261-Reviews-Hu_Norcenni_Girasole_village-Figline_e_Incisa_Valdarno_Tuscany.html",
+  "https://www.tripadvisor.com/Hotel_Review-g1741825-d1891906-Reviews-Girasole_Eco_Family_Village-Marina_Palmense_Fermo_Province_of_Fermo_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g187796-d4116318-Reviews-Camping_Paradiso-Pesaro_Province_of_Pesaro_and_Urbino_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g194858-d1815916-Reviews-Camping_Bellamare-Porto_Recanati_Province_of_Macerata_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g608900-d4817085-Reviews-Camping_Reno-Sirolo_Province_of_Ancona_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g194914-d2316135-Reviews-Camping_Summerland-Senigallia_Province_of_Ancona_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g2275905-d2250335-Reviews-Camping_Gabicce_Monte-Gabicce_Monte_Province_of_Pesaro_and_Urbino_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g187895-d6721746-Reviews-Firenze_Camping_in_Town-Florence_Tuscany.html",
+  "https://www.tripadvisor.com/Hotel_Review-g608900-d1520372-Reviews-Camping_Club_Internazionale-Sirolo_Province_of_Ancona_Marche.html",
+  "https://www.tripadvisor.com/Hotel_Review-g608900-d1146098-Reviews-Green_Garden_Camping_Village-Sirolo_Province_of_Ancona_Marche.html",
+  ]
 
 def getGeneralAndFacilities(url):
 
@@ -48,11 +62,18 @@ def getGeneralAndFacilities(url):
 
   camping_general = []
 
-  camping_name = soup.find("h1", {"class": "fkWsC b d Pn"}).text
-  camping_address = soup.find("div", {"class": "ApqWZ S4 H3 f u eEkxn"}).text
-  camping_about = soup.find("div", {"class": "pIRBV _T"}).text
-  #camping_price = soup.find("div", {"class": "vyNCd b Wi"}) # non trova questo tag
-  #camping_price = camping_price.text.strip()
+  camping_name = soup.find("h1", {"class": "fkWsC b d Pn"})
+  if camping_name is not None: camping_name = camping_name.text
+
+  camping_address = soup.find("div", {"class": "ApqWZ S4 H3 f u eEkxn"})
+  if camping_address is not None: camping_address = camping_address.text
+
+  camping_about = soup.find("div", {"class": "pIRBV _T"})
+  if camping_about is not None: camping_about = camping_about.text
+
+  camping_price = soup.find("div", {"class": "vyNCd b Wi"})
+  if camping_price is not None: camping_price = camping_price.text
+  else: camping_price = "non disponibile"
 
   lista_div_servizi = soup.find_all("div", {"class": "bUmsU f ME H3 _c"})
 
@@ -63,7 +84,7 @@ def getGeneralAndFacilities(url):
 
   camping_facilities = ''.join(map(str, servizi_app))
   
-  camping_general.append(camping_name); camping_general.append(camping_address); camping_general.append(camping_about); camping_general.append(camping_facilities)
+  camping_general.append(camping_name); camping_general.append(camping_address); camping_general.append(camping_about); camping_general.append(camping_price); camping_general.append(camping_facilities)
   return camping_general
 
 def getNumReviews(url):
@@ -156,7 +177,7 @@ def writeGeneralToExcel(dataset):
   OUTPUT_PATH = OUTPUT_PATH + f'/datasets/general_data_dataset_tripadvisor.xlsx'
   OUTPUT_PATH = OUTPUT_PATH.replace("\\", "/")
   
-  columns = ["name", "address", "about", "facilities"]
+  columns = ["name", "address", "about", "price", "facilities"]
   df = pd.DataFrame(dataset, columns = columns)
   df.to_excel(OUTPUT_PATH)
 
@@ -201,5 +222,5 @@ def main(url):
         all_reviews.append(review)
   
   writeReviewsToExcel(all_reviews) # salvo le recensioni su file
-  
+
 main(url)
