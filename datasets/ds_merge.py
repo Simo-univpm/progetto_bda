@@ -23,6 +23,6 @@ def mergeBookingDataSets():
 def main():
 
     booking_complete_dataset = mergeBookingDataSets()
-    booking_complete_dataset.to_excel(PATH + "sas.xlsx", header = True)
+    booking_complete_dataset.to_excel(PATH + "sas_left.xlsx", header = True)
 
 main()
