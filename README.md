@@ -1,4 +1,7 @@
-# progetto Big Data Analytics e Machine Learning @Univpm a.a. 2021/2022
+# Progetto Big Data Analytics e Machine Learning @Univpm a.a. 2021/2022
+Il progetto consiste nell'effettuare lo scraping di alcune sorgenti dati come Bookin e Tripadvisor tramite dei web crawler. I dati ottenuti dovranno essere sfruttati per la progettazione di un data warehouse. In questa repo sono presenti i codice sorgenti dei vari crawler sviluppati.
+
+
 La repo contiene 4 directories: crawler_booking, crawler_expedia, crawler_tripadvisor e datasets:
  
 * In "crawler_booking" ci sono gli scraper per le disponibilità, i dati generali e le recensioni dei siti di camping ottenuti da booking.
