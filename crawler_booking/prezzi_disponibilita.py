@@ -29,7 +29,6 @@ def getId(url):
   id = id.partition("it/")[2] # prende tutto quello dopo di it/ dall'url
 
   return id
-    
 
 def getAvailabilities(url):
 
@@ -117,6 +116,7 @@ def main(checkin, checkout):
 # 1 - avviare lo script gui.py e impostare le date per lo scraping tramite la gui
 # 2 - main("2022-09-17", "2022-09-24") --> richiamiamo il main direttamente da questo file con le date che ci interssano
 # 3 - main(sys.argv[1], sys.argv[2])   --> eseguire lo script da terminale con le date passate come argomento
+
 
 main("2022-09-17", "2022-09-24")
 #main(sys.argv[1], sys.argv[2])

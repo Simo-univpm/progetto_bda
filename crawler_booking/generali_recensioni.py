@@ -1,3 +1,4 @@
+from ftplib import all_errors
 import requests # libreria per generare richieste HTTP 
 from bs4 import BeautifulSoup as bs # libreria per scraping
 import pandas as pd
@@ -41,7 +42,6 @@ def editLinksReviews(unedited_links):
     urls.append(url)
 
   return urls
-
 
 def getIdGeneral(url):
   id = url.partition(".it.html")[0] # prende tutto quello prima di .it.html dall'url
@@ -154,6 +154,11 @@ def getReviewsData(soup, url):
     review_title = review.find("span", {"itemprop": "name"})
     review_appoggio.append(review_title.text.strip())
 
+    # prendo il tipo di stanza associato alla recensione (sembra sempre il terzo tag in <li class="review_info_tag">)
+    all_tags = review.find_all("li", {"class": "review_info_tag"})
+    if all_tags[2] is not None: review_appoggio.append(all_tags[2].text)
+    else: review_appoggio.append("no room_type")
+
     neg_review = review.find("p", {"class": "review_neg"})
     if neg_review is not None: review_appoggio.append(neg_review.text.strip())
     else: review_appoggio.append("no negative review")
@@ -192,7 +197,7 @@ def writeReviewsToExcel(dataset):
   OUTPUT_PATH = OUTPUT_PATH + f'/datasets/review_dataset_booking.xlsx'
   OUTPUT_PATH = OUTPUT_PATH.replace("\\", "/")
   
-  columns = ["reviews_vote", "reviews_title", "reviews_negative", "reviews_positive", "review_staydate", "url", "id"]
+  columns = ["reviews_vote", "reviews_title", "room_type", "reviews_negative", "reviews_positive", "review_staydate", "url", "id"]
   df = pd.DataFrame(dataset, columns = columns)
   df.to_excel(OUTPUT_PATH)
 
