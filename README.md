@@ -1,7 +1,7 @@
 # progetto_bda
 La repo contiene 4 directories: crawler_booking, crawler_expedia, crawler_tripadvisor e datasets:
  
-* In "crawler_booking" ci sono gli scraper per le disponibilità, i dati generali e le recensioni.
+* In "crawler_booking" ci sono gli scraper per le disponibilità, i dati generali e le recensioni dei siti di camping ottenuti da booking.
 Lo script "prezzi_disponibilita.py" è eseguibile tramite gui o tramite terminale seguendo questa sintassi: "py prezzi_disponibilita.py <data di checkin> <data di checkout>".
 Ad esempio il comando "py prezzi_disponibilita.py 2022-09-17 2022-09-24" effettuerà lo scraping delle disponibilità dei primi 25 camping ritornati da booking ordinati per priorità nelle marche per il periodo specificato in argomento che va dal 17 settembre 2022 al 24 settembre 2022.
 Lo script "generali_recensioni.py" è anch'esso eseguibile tramite gui o tramite terminale. Nel caso in cui si sceglie di eseguirlo tramite terminale, con il comando py generali_recensioni.py, non vanno specificati argomenti in input in quanto si limita ad effettuare lo scraping dei dati generali e delle recensioni dei primi 25 camping di booking.
