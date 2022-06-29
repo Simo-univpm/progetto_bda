@@ -1,4 +1,4 @@
-# progetto_bda
+# progetto Big Data Analytics e Machine Learning @Univpm a.a. 2021/2022
 La repo contiene 4 directories: crawler_booking, crawler_expedia, crawler_tripadvisor e datasets:
  
 * In "crawler_booking" ci sono gli scraper per le disponibilità, i dati generali e le recensioni dei siti di camping ottenuti da booking.
