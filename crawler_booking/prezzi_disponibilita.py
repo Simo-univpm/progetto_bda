@@ -2,13 +2,11 @@ import requests # libreria per generare richieste HTTP
 from bs4 import BeautifulSoup as bs # libreria per scraping
 import pandas as pd
 from os.path import dirname, abspath
-import sys
 head = head = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0'}
-
 
 def OLDgetAllCampingLinks(checkin, checkout):
 
-   # prende automaticamente gli url dei primi 25 camping da booking
+   # prende automaticamente gli url dei primi 25 camping da booking (questi sono ordinati per priorità da booking stesso)
 
   url = "https://www.booking.com/searchresults.it.html?ss=Marche%2C+Italia&is_ski_area=&checkin_year=&checkin_month=&checkout_year=&checkout_month=&group_adults=2&group_children=0&no_rooms=1&b_h4u_keep_filters=&from_sf=1&dest_id=905&dest_type=region&search_selected=true&nflt=ht_id%3D224%3Bht_id%3D214"
   resp = requests.get(url, headers = head)
