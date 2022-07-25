@@ -27,3 +27,15 @@ def main():
     booking_complete_dataset.to_excel(PATH + "sas_left.xlsx", header = True)
 
 main()
+
+
+reviews_booking_ds = reviews_booking_ds.apply(getIdFromUrl(reviews_booking_ds["url"]), axis=0, raw=False, result_type='broadcast')
+
+
+
+reviews_booking_ds = reviews_booking_ds.apply(lambda x: )
+
+df['x'] = df['x'].apply(lambda x: x * 2)
+
+id = url.partition(".it.html")[0] # prende tutto quello prima di .it.html dall'url
+id = id.partition("it/")[2] # prende tutto quello dopo di it/ dall'url
