@@ -43,20 +43,20 @@ def getGeneralAndFacilities(url):
 
   camping_general = []
 
-  camping_name = soup.find("h1", {"class": "fkWsC b d Pn"})
+  camping_name = soup.find("h1", {"class": "QdLfr b d Pn"}) 
   if camping_name is not None: camping_name = camping_name.text
 
-  camping_address = soup.find("div", {"class": "ApqWZ S4 H3 f u eEkxn"})
+  camping_address = soup.find("div", {"class": "gZwVG S4 H3 f u ERCyA"})   
   if camping_address is not None: camping_address = camping_address.text
 
-  camping_about = soup.find("div", {"class": "pIRBV _T"})
+  camping_about = soup.find("div", {"class": "fIrGe _T"})
   if camping_about is not None: camping_about = camping_about.text
 
-  camping_price = soup.find("div", {"class": "vyNCd b Wi"})
+  camping_price = soup.find("div", {"class": "JPNOn b Wi"})
   if camping_price is not None: camping_price = camping_price.text
   else: camping_price = "non disponibile"
 
-  lista_div_servizi = soup.find_all("div", {"class": "bUmsU f ME H3 _c"})
+  lista_div_servizi = soup.find_all("div", {"class": "yplav f ME H3 _c"})
 
   servizi_app = []
   for div_servizio in lista_div_servizi:
@@ -116,14 +116,14 @@ def getReviews(url):
   soup = bs(response.text, 'lxml')
 
 
-  lista_div_recensioni = soup.find_all("div", {"class": "cWwQK MC R2 Gi z Z BB dXjiy"} and {"data-test-target": "HR_CC_CARD"})
+  lista_div_recensioni = soup.find_all("div", {"class": "YibKl MC R2 Gi z Z BB pBbQr"} and {"data-test-target": "HR_CC_CARD"})
 
   recensioni = []
   for div_recensioni in lista_div_recensioni:
     app_rec = []
 
     # utente che ha lasciato la recensione
-    user = div_recensioni.find("a", {"class": "ui_header_link bPvDb"}, href = True)
+    user = div_recensioni.find("a", {"class": "ui_header_link uyyBf"}, href = True)
     if user is not None: app_rec.append(user.text)
     else: app_rec.append("no user")
 
@@ -133,17 +133,17 @@ def getReviews(url):
     else: app_rec.append("no rating")
 
     # titolo della recensione
-    title = div_recensioni.find("div", {"class": "fpMxB MC _S b S6 H5 _a"} and {"dir": "ltr"} and {"data-test-target": "review-title"})
+    title = div_recensioni.find("div", {"class": "KgQgP MC _S b S6 H5 _a"} and {"dir": "ltr"} and {"data-test-target": "review-title"})
     if title is not None: app_rec.append(title.text)
     else: app_rec.append("no title")
 
     # corpo della recensione
-    review_text = div_recensioni.find("q", {"class": "XllAv H4 _a"})
+    review_text = div_recensioni.find("q", {"class": "QewHA H4 _a"})
     if review_text is not None: app_rec.append(review_text.text)
     else: app_rec.append("no text")
 
     # data di soggiorno dell'utente che ha lasciato la recensione
-    stay_date = div_recensioni.find("span", {"class": "euPKI _R Me S4 H3"})
+    stay_date = div_recensioni.find("span", {"class": "teHYY _R Me S4 H3"})
     if stay_date is not None: app_rec.append(stay_date.text)
     else: app_rec.append("no date")
 
@@ -162,7 +162,7 @@ def writeGeneralToExcel(dataset):
   df = pd.DataFrame(dataset, columns = columns)
   df.to_excel(OUTPUT_PATH)
 
-  print("generali scritte su: " + OUTPUT_PATH)
+  print("Il file 'general_data_dataset_tripadvisor.xlsx' è stato salvato nel percorso seguente: " + OUTPUT_PATH)
 
 def writeReviewsToExcel(dataset):
   
@@ -174,7 +174,7 @@ def writeReviewsToExcel(dataset):
   df = pd.DataFrame(dataset, columns = columns)
   df.to_excel(OUTPUT_PATH)
 
-  print("recensioni scritte su:" + OUTPUT_PATH)
+  print("Il file 'review_dataset_tripadvisor.xlsx' è stato salvato nel percorso seguente: " + OUTPUT_PATH)
 
 def main(url):
 
