@@ -73,7 +73,7 @@ def getNumReviews(url):
   response = requests.get(url, headers = head)
   soup = bs(response.text, 'lxml')
 
-  num_reviews = soup.find("span", {"class": "cdKMr Mc _R b"})
+  num_reviews = soup.find("span", {"class": "iypZC Mc _R b"})
   print("> NUMERO RECENSIONI: " + num_reviews.text)
 
   return num_reviews
