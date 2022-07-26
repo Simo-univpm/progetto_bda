@@ -8,6 +8,8 @@ PATH = dirname(dirname(abspath(__file__)))
 PATH = PATH + f'/Merge_datasets_output/'
 PATH = PATH.replace("\\", "/")
 
+print (PATH)
+
 def mergeGeneralDataSets():
     general_booking_df = pd.read_excel(PATH + "general_data_dataset_booking.xlsx", index_col=0)
     general_tripadvisor_df = pd.read_excel(PATH + "general_data_dataset_tripadvisor.xlsx", index_col=0)
@@ -50,7 +52,12 @@ def main():
 
     camping_booking_reviews_dataset = ReviewsBookingDataSets()
     camping_tripadvisor_reviews_dataset = ReviewsTripadvisorDatasets()
-    reviews_merged_df = pd.merge(camping_booking_reviews_dataset, camping_tripadvisor_reviews_dataset, on = 'url', how='outer')
+#    reviews_merged_df = pd.merge(camping_booking_reviews_dataset, camping_tripadvisor_reviews_dataset, on = 'url', how='outer')
+
+    reviews_merged_df = pd.concat([camping_booking_reviews_dataset, camping_tripadvisor_reviews_dataset], axis=0, ignore_index=True)
+
+
+
     reviews_merged_df.to_excel(PATH + "Reviews_data_merged.xlsx", header = True)
 
 main()
