@@ -118,5 +118,5 @@ def main(checkin, checkout):
 # 3 - main(sys.argv[1], sys.argv[2])   --> eseguire lo script da terminale con le date passate come argomento
 
 
-main("2022-09-17", "2022-09-24")
-#main(sys.argv[1], sys.argv[2])
+#main("2022-09-17", "2022-09-24")
+main(sys.argv[1], sys.argv[2])
