@@ -29,12 +29,14 @@ Per utilizzare il materiale a disposizione in questa repo è necessario avere in
 * py -m pip install bs4
 * py -m pip install pandas
 * py -m pip install lxml
+* py -m pip install openpyxl
 
 ### Installazione librerie su Linux
 * pip install requests
 * pip install bs4
 * pip install pandas
 * pip install lxml
+* py -m pip install openpyxl
 
 
 ## Struttura della directory del progetto
