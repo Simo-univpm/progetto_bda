@@ -11,6 +11,7 @@ In particolar modo per ottenere i dati abbiamo sviluppato dei web crawler: dei s
 
 ## Indice
 - [librerie utilizzate](#librerie-utilizzate)
+- [installazione dei software necessari](#installazione-dei-software-necessari)
 - [struttura directory progetto](#struttura-della-directory-del-progetto)
 - [descrizione dei files](#descrizione-dei-files)
 - [esecuzione del progetto](#esecuzione-del-progetto)
@@ -20,6 +21,21 @@ In particolar modo per ottenere i dati abbiamo sviluppato dei web crawler: dei s
 - Requests (https://pypi.org/project/requests/), per effettuare le chiamate HTTP verso le sorgenti
 - Beautiful Soup (https://www.crummy.com/software/BeautifulSoup/), per effettuare lo scraping dei dati dai file HTML ottenuti in risposta
 - Pandas (https://pandas.pydata.org/), per effettuare operazione di trasformazione dei dati e generare i datasets
+
+## Installazione dei software necessari
+Per utilizzare il materiale a disposizione in questa repo è necessario avere installato python3 (disponibile al seguente indirizzo: https://www.python.org/) e le librerie sopra elencate.
+### Installazione librerie su Windows
+* py -m pip install requests
+* py -m pip install bs4
+* py -m pip install pandas
+* py -m pip install lxml
+
+### Installazione librerie su Linux
+* pip install requests
+* pip install bs4
+* pip install pandas
+* pip install lxml
+
 
 ## Struttura della directory del progetto
 ```
