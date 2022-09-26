@@ -99,7 +99,7 @@ Contiene:
 
 ovvero gli scraper per le disponibilità, i dati generali e le recensioni dei siti di camping ottenuti da booking.
 
-
+#### prezzi_disponibilita.py
 Lo script "prezzi_disponibilita.py" è eseguibiletramite terminale seguendo questa sintassi:
 ```
 py prezzi_disponibilita.py "checkin" "checkout"
@@ -109,7 +109,7 @@ Ad esempio il comando ```py prezzi_disponibilita.py "2022-09-17" "2022-09-24"```
 L'output dello scraper sarà automaticamente salvato nella directory "/datasets" sotto il nome "availability_datasets_checkin_checkout_booking.xlsx"
 
 
-
+#### generali_recensioni.py
 Lo script "generali_recensioni.py" è eseguibile tramite terminale seguendo questa sintassi:
 ```
 py generali_recensioni.py
