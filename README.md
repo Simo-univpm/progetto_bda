@@ -104,7 +104,7 @@ Lo script "prezzi_disponibilita.py" è eseguibiletramite terminale seguendo ques
 ```
 py prezzi_disponibilita.py "checkin" "checkout"
 ```
-Ad esempio il comando "py prezzi_disponibilita.py "2022-09-17" "2022-09-24" effettuerà lo scraping delle disponibilità dei primi camping ritornati da booking ordinati per priorità nelle marche per il periodo specificato in argomento che va dal 17 settembre 2022 al 24 settembre 2022.
+Ad esempio il comando 'py prezzi_disponibilita.py "2022-09-17" "2022-09-24"' effettuerà lo scraping delle disponibilità dei primi camping ritornati da booking ordinati per priorità nelle marche per il periodo specificato in argomento che va dal 17 settembre 2022 al 24 settembre 2022.
 
 L'output dello scraper sarà automaticamente salvato nella directory "/datasets" sotto il nome "availability_datasets_checkin_checkout_booking.xlsx"
 
