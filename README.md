@@ -210,4 +210,4 @@ Al termine dell'esecuzione avremo 3 files principali unificati, puliti e formatt
 ## Progetto demo
 E' disponibile un fork del progetto presso questo indirizzo: https://github.com/Simo-univpm/progetto_bda_demo.
 
-L'unica differenza con l'originale è che viene effettuato lo scraping di solamente 3 camping per sorgente in maniera tale da ridurre i tempi di esecuzione per una eventuale presentazione, in quanto i tempi di esecuzione del progetto originale spazia dai 20 ai 30 minuti in base al numero di sorgenti da analizzare.
+L'unica differenza con l'originale è che viene effettuato lo scraping di solamente 3 camping per sorgente in maniera tale da ridurre i tempi di esecuzione per una eventuale presentazione, in quanto i tempi di esecuzione del progetto originale spaziano dai 20 ai 30 minuti in base al numero di sorgenti analizzate.
