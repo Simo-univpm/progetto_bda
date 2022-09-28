@@ -5,7 +5,7 @@ import pandas as pd
 from os.path import dirname, abspath
 
 
-#NO SITI .COM, tripadvisor da le recensioni in inglese e ce ne sono solo tipo 2 o 3
+#NO SITI .COM, tripadvisor imposta l'inglese come lingua default --> ok per i dati generali, non ok per le recensioni!!
 
 url = [
        "https://www.tripadvisor.it/Hotel_Review-g2189383-d4923901-Reviews-Centro_Vacanze_Garden_River-Altidona_Province_of_Fermo_Marche.html", 
